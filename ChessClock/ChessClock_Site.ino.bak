@@ -1,0 +1,145 @@
+// Control of Display7Seg { a, b, c, d, e, f, g, dp }
+const byte LENGHT = 10;
+const byte mapDisplay[] = { 2, 3, 4, 5, 6, 7, 8, 9 };
+
+// Pause button control
+const byte BUTTON_PIN = 10;
+bool isStarted = false;
+
+// Player switch control
+const byte SWITCH_A_PIN = 12; // Switch Input 1
+const byte SWITCH_B_PIN = 11; // Switch Input 2
+bool playerATurn = true;
+
+byte timerA = 0;
+byte timerB = 0;
+
+
+void showNumber(byte b);
+void showDisplay(int ledsDisplay[]);
+
+
+void setup() {  
+  for(int i = 0; i < LENGHT; i++) {
+    pinMode(mapDisplay[i], OUTPUT); 
+  }
+  pinMode(BUTTON_PIN, OUTPUT);
+}
+
+void loop() {
+  // Read the start button
+  isStarted = digitalRead(BUTTON_PIN);
+ 
+  if(isStarted) {
+	// Read the player's turn    
+    playerATurn = digitalRead(SWITCH_A_PIN);
+    
+    if(playerATurn) {
+      showNumber(timerA);
+      delay(999);
+            
+      if(timerA == 10) {
+        timerA = 0;
+      } else {
+        timerA++; 
+      }
+    } else {
+      showNumber(timerB);
+      delay(999);
+            
+      if(timerB == 10) {
+        timerB = 0;
+      } else {
+        timerB++; 
+      }
+    }
+  }
+}
+
+/**
+  Show the given number, use a map to show on the display 7 segs
+*/
+void showNumber(byte b) {
+  int ledsDisplay[] = { LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW };
+  switch(b) {
+    case 0:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[2] = HIGH;
+      ledsDisplay[3] = HIGH;
+      ledsDisplay[4] = HIGH;
+      ledsDisplay[5] = HIGH;
+      break;
+    case 1:
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[2] = HIGH;
+      break;
+    case 2:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[3] = HIGH;
+      ledsDisplay[4] = HIGH;
+      ledsDisplay[6] = HIGH;
+      break;
+    case 3:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[2] = HIGH;
+      ledsDisplay[3] = HIGH;
+      ledsDisplay[6] = HIGH;
+      break;
+    case 4:
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[2] = HIGH;
+      ledsDisplay[5] = HIGH;
+      ledsDisplay[6] = HIGH;
+      break;
+    case 5:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[2] = HIGH;
+      ledsDisplay[3] = HIGH;
+      ledsDisplay[5] = HIGH;
+      ledsDisplay[6] = HIGH;
+      break;
+    case 6:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[2] = HIGH;
+      ledsDisplay[3] = HIGH;
+      ledsDisplay[4] = HIGH;
+      ledsDisplay[5] = HIGH;
+      ledsDisplay[6] = HIGH;
+      break;
+    case 7:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[2] = HIGH;
+      break;
+    case 8:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[2] = HIGH;
+      ledsDisplay[3] = HIGH;
+      ledsDisplay[4] = HIGH;
+      ledsDisplay[5] = HIGH;
+      ledsDisplay[6] = HIGH;
+      break;
+    case 9:
+      ledsDisplay[0] = HIGH;
+      ledsDisplay[1] = HIGH;
+      ledsDisplay[2] = HIGH;
+      ledsDisplay[3] = HIGH;
+      ledsDisplay[5] = HIGH;
+      ledsDisplay[6] = HIGH;
+      break;
+  }
+  showDisplay(ledsDisplay);
+}
+
+/**
+  Show the given map on the display 7 segs
+*/
+void showDisplay(int ledsDisplay[]) {
+  for(int i = 0; i < LENGHT; i++) {
+    digitalWrite(mapDisplay[i], ledsDisplay[i]);
+  }
+}
