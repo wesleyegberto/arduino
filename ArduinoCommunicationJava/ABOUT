@@ -1,0 +1,12 @@
+***********************************
+   Projeto Mini Painel
+***********************************
+Autor: Wesley Egberto
+Data: 11/01/2014
+***********************************
+
+
+Projeto para desenvolvimento de um mini painel de controle dos componentes do Arduino.
+Neste projeto o painel controla os LEDs e pode efetuar leitura de luminosidade.
+
+
