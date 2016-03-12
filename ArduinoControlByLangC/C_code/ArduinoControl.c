@@ -52,7 +52,7 @@ void printMenu() {
 }
 
 void sendCommand(char command) {
-   // Open the Arduino's Serial file
+    // Open the Arduino's Serial file
     struct termios toptions;
     int port = open("/dev/ttyACM0", O_RDWR | O_NONBLOCK);
 

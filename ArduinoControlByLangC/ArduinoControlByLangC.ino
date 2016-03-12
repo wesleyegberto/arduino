@@ -10,14 +10,16 @@
 #define YELLOW_PIN 9
 #define GREEN_PIN 10
 #define LIGHT_PIN 0
+#define BUFFER_LENGTH 16
 
 LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
 
 float sensor;
-char buffer[16];
+char buffer[BUFFER_LENGTH];
 int i;
 int row;
 
+void clearBuffer();
 void showMessageLcd(String message, int col, int row, boolean clearLcd);
 
 void setup() {
@@ -72,16 +74,18 @@ void loop() {
         dtostrf(sensor, 2, 2, buffer);
         showMessageLcd(buffer, 0, 1, false);
         Serial.println(sensor);
+        clearBuffer();
         break;
       case 'S':
         showMessageLcd("Show message", 0, 0, true);
         i = row = 0;
         while(Serial.available()) {
-          Serial.readBytesUntil('\n', buffer, 16);
+          Serial.readBytes(buffer, 16);
           lcd.clear();
           showMessageLcd(buffer, 0, row++, false);
           delay(1000);
-          if(row == 1) row = 0;
+          clearBuffer();
+          if(row == 2) row = 0;
         }
         Serial.println("Showed");
         break;
@@ -93,6 +97,10 @@ void loop() {
   delay(1000);
 }
 
+void clearBuffer() {
+  for(int i = 0; i < BUFFER_LENGTH; i++)
+    buffer[i] = '\n'; 
+}
 void showMessageLcd(String message, int col, int row, boolean clearLcd) {
   if(clearLcd) {
     lcd.clear();
